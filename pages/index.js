@@ -15,7 +15,7 @@ const Home = (props) => {
         <h2>No Products</h2>
       ) : (
         products.map((product) => (
-          <ProductItem key={product._id} {...product} />
+          <ProductItem key={product._id} product={product} />
         ))
       )}
     </div>
@@ -24,7 +24,6 @@ const Home = (props) => {
 
 export async function getServerSideProps() {
   const res = await getData("product");
-  console.log(res);
   // server side rendering
   return {
     props: {

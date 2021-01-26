@@ -9,7 +9,7 @@ const Navbar = () => {
   const router = useRouter();
 
   const { state, dispatch } = useContext(DataContext);
-  const { auth } = state;
+  const { auth, cart } = state;
 
   const isActive = (r) => {
     if (r === router.pathname) {
@@ -31,7 +31,7 @@ const Navbar = () => {
       <li className="nav-item dropdown">
         <a
           className="nav-link dropdown-toggle"
-          href="#"
+          href="/"
           id="navbarDropdownMenuLink"
           role="button"
           data-toggle="dropdown"
@@ -52,7 +52,7 @@ const Navbar = () => {
           {auth.user.name}
         </a>
         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a className="dropdown-item" href="#">
+          <a className="dropdown-item" href="/">
             Profile
           </a>
           <button className="dropdown-item" onClick={handleLogout}>
@@ -83,15 +83,33 @@ const Navbar = () => {
         className="collapse navbar-collapse justify-content-end"
         id="navbarNavDropdown"
       >
-        <ul className="navbar-nav">
+        <ul className="navbar-nav p-1">
           <li className="nav-item">
             <Link href="/cart">
               <a
                 className={"nav-link" + isActive("/cart")}
                 style={{ display: "flex", alignItems: "center" }}
               >
-                <FaShoppingCart aria-hidden="true" />
-                <span> Cart</span>
+                <div className="position-relative">
+                  <FaShoppingCart aria-hidden="true" />
+                  <span
+                    className="position-absolute"
+                    style={{
+                      padding: "1px 6px",
+                      background: "#ed143dc2",
+                      borderRadius: "50%",
+                      top: "-7px",
+                      right: "-10px",
+                      color: "white",
+                      fontSize: "14px",
+                    }}
+                  >
+                    {" "}
+                    {cart.length}{" "}
+                  </span>
+                </div>
+
+                <span style={{ marginLeft: 10 }}> Cart</span>
               </a>
             </Link>
           </li>
