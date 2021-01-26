@@ -1,12 +1,57 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { DataContext } from "../store/GlobalState";
 import CartItem from "../components/CartItem";
+import { getData } from "../utils/fetchData";
 
 const Cart = () => {
   const { state, dispatch } = useContext(DataContext);
   const { cart, auth } = state;
+
+  const [total, setTotal] = useState(1);
+
+  useEffect(() => {
+    const getTotal = () => {
+      const res = cart.reduce((prev, item) => {
+        return prev + item.price * item.quantity;
+      }, 0);
+
+      setTotal(res);
+    };
+
+    getTotal();
+  }, [cart]);
+
+  useEffect(() => {
+    const cartLocal = JSON.parse(localStorage.getItem("__next__cart01__devdd"));
+    if (cartLocal && cartLocal.length > 0) {
+      let newArr = [];
+      const updateCart = async () => {
+        for (const item of cartLocal) {
+          const res = await getData(`product/${item._id}`);
+          const { _id, title, images, price, inStock } = res.product;
+
+          if (inStock > 0) {
+            newArr.push({
+              _id,
+              title,
+              images,
+              price,
+              inStock,
+              quantity: item.quantity > inStock ? 1 : item.quantity,
+            });
+          }
+        }
+
+        dispatch({
+          type: "ADD_CART",
+          payload: newArr,
+        });
+      };
+      updateCart();
+    }
+  }, []);
 
   if (cart.length === 0)
     return (
@@ -70,7 +115,7 @@ const Cart = () => {
         </form>
 
         <h3>
-          Total: <span className="text-info">0</span>
+          Total: <span className="text-info">${total}</span>
         </h3>
 
         <Link href={auth.user ? "#" : "/signin"}>
