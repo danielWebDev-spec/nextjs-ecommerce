@@ -19,4 +19,7 @@ img {
   object-fit: cover;
 }
 
+/* --------------- Loading --------------- */
 @import url("./loading.css");
+/* --------------- Product --------------- */
+@import url("./product.css");
