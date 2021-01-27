@@ -1,3 +1,4 @@
+import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
@@ -14,6 +15,9 @@ class MyDocument extends Document {
 
           <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+          <script
+            src={`https://www.paypal.com/sdk/js?client-id=${process.env.SB_CLIENT_ID}`}
+          ></script>
         </Head>
         <body>
           <Main />
