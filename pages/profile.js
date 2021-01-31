@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import { DataContext } from "../store/GlobalState";
 import valid from "../utils/valid";
 import { patchData } from "../utils/fetchData";
-import { FaCamera } from "react-icons/fa";
+import { FaCamera, FaCheck, FaTimes } from "react-icons/fa";
 import { imageUpload } from "../utils/imageUpload";
 
 const Profile = () => {
@@ -19,7 +20,7 @@ const Profile = () => {
 
   const { state, dispatch } = useContext(DataContext);
 
-  const { auth, notify } = state;
+  const { auth, notify, orders } = state;
 
   useEffect(() => {
     if (auth.user) setData({ ...data, name: auth.user.name });
@@ -192,7 +193,54 @@ const Profile = () => {
         </div>
 
         <div className="col-md-8">
-          <h3>Orders</h3>
+          <h3 className="text-uppercase">Orders</h3>
+
+          <div className="my-3 table-responsive">
+            <table
+              className="table-bordered table-hover w-100 text-uppercase"
+              style={{ minWidth: "600px", cursor: "pointer" }}
+            >
+              <thead className="bg-light font-weight-bold">
+                <tr>
+                  <td className="p-2">id</td>
+                  <td className="p-2">date</td>
+                  <td className="p-2">total</td>
+                  <td className="p-2">delivered</td>
+                  <td className="p-2">paid</td>
+                </tr>
+              </thead>
+
+              <tbody>
+                {orders.map((order) => (
+                  <tr key={order._id}>
+                    <td className="p-2">
+                      <Link href={`/order/${order._id}`}>
+                        <a>{order._id}</a>
+                      </Link>
+                    </td>
+                    <td className="p-2">
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="p-2">${order.total}</td>
+                    <td className="p-2">
+                      {order.delivered ? (
+                        <FaCheck className="text-success" />
+                      ) : (
+                        <FaTimes className="text-danger" />
+                      )}
+                    </td>
+                    <td className="p-2">
+                      {order.paid ? (
+                        <FaCheck className="text-success" />
+                      ) : (
+                        <FaTimes className="text-danger" />
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
     </div>
