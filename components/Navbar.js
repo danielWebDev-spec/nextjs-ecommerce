@@ -26,6 +26,22 @@ const Navbar = () => {
     dispatch({ type: "NOTIFY", payload: { success: "Logged out." } });
   };
 
+  const adminRouter = () => {
+    return (
+      <>
+        <Link href="/users">
+          <a className="dropdown-item">Users</a>
+        </Link>
+        <Link href="/create">
+          <a className="dropdown-item">Products</a>
+        </Link>
+        <Link href="/categories">
+          <a className="dropdown-item">Categories</a>
+        </Link>
+      </>
+    );
+  };
+
   const loggedRouter = () => {
     return (
       <li className="nav-item dropdown">
@@ -55,6 +71,8 @@ const Navbar = () => {
           <Link href="/profile">
             <a className="dropdown-item">Profile</a>
           </Link>
+          {auth.user.role === "admin" && adminRouter()}
+          <div className="dropdown-divider"></div>
           <button className="dropdown-item" onClick={handleLogout}>
             Logout
           </button>

@@ -7,7 +7,7 @@ import OrderDetail from "../../components/OrderDetail";
 
 const DetailOrder = () => {
   const { state, dispatch } = useContext(DataContext);
-  const { orders } = state;
+  const { orders, auth } = state;
 
   const router = useRouter();
 
@@ -18,6 +18,7 @@ const DetailOrder = () => {
     setOrderDetail(newArr);
   }, [orders]);
 
+  if (!auth.user) return null;
   return (
     <div className="my-3">
       <Head>
@@ -28,7 +29,11 @@ const DetailOrder = () => {
           <FaLongArrowAltLeft /> Go Back
         </button>
       </div>
-      <OrderDetail orderDetail={orderDetail} />
+      <OrderDetail
+        orderDetail={orderDetail}
+        state={state}
+        dispatch={dispatch}
+      />
     </div>
   );
 };
